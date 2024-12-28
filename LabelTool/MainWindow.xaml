@@ -1,0 +1,68 @@
+﻿<Window x:Class="ImageSelectionApp.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="Image Selection" 
+        Height="600" 
+        Width="800">
+
+    <Grid>
+        <!-- Dwie kolumny: lewa - obraz w Viewbox, prawa - przyciski, lista zaznaczeń -->
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="250" />
+        </Grid.ColumnDefinitions>
+
+        <!-- 
+          LEWA KOLUMNA: Viewbox wymusi skalowanie zawartego w nim elementu 
+          (Grid z Image i Canvas) do rozmiaru, jaki zajmuje Viewbox w oknie.
+          Stretch="Uniform" zachowuje proporcje.
+        -->
+        <Viewbox Grid.Column="0"
+                 Stretch="Uniform"
+                 Name="MainViewbox">
+
+            <!-- Wewnątrz Viewbox dajemy Grid, aby na nim "nałożyć" Image i Canvas -->
+            <Grid x:Name="ImageGrid">
+
+                <!-- Obraz, który wyświetlamy (bezpośrednio wypełnia Grid) -->
+                <Image x:Name="ImageViewer"
+                       Stretch="Fill" />
+
+                <!-- Canvas "na wierzchu" do rysowania prostokątów.
+                     Przezroczyste tło, żeby widzieć obraz pod spodem.
+                -->
+                <Canvas x:Name="DrawingCanvas"
+                        Background="Transparent"
+                        MouseLeftButtonDown="Canvas_MouseLeftButtonDown"
+                        MouseMove="Canvas_MouseMove"
+                        MouseLeftButtonUp="Canvas_MouseLeftButtonUp" />
+            </Grid>
+        </Viewbox>
+
+        <!-- 
+          PRAWA KOLUMNA: przyciski, lista zaznaczeń, itp. 
+        -->
+        <StackPanel Grid.Column="1" Margin="10">
+            <Button x:Name="LoadImageButton"
+                    Content="Wczytaj obraz"
+                    Margin="0,0,0,10"
+                    Click="LoadImageButton_Click" />
+
+            <Button x:Name="AddSelectionButton"
+                    Content="Dodaj zaznaczenie"
+                    Margin="0,0,0,10"
+                    Click="AddSelectionButton_Click" />
+
+            <Button x:Name="ExportSelectionsButton"
+                    Content="Eksportuj"
+                    Margin="0,0,0,10"
+                    Click="ExportSelections_Click" />
+
+            <ScrollViewer VerticalScrollBarVisibility="Auto"
+                          HorizontalScrollBarVisibility="Disabled"
+                          Height="300">
+                <StackPanel x:Name="SelectionsPanel" />
+            </ScrollViewer>
+        </StackPanel>
+    </Grid>
+</Window>
